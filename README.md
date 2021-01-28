@@ -1,2 +1,2 @@
 # Sistemas y Tecnologías Web
-Trabajos del curso de sistemas y tecnologías web CC3062
+El siguiente repositorio contiene distintos códigos que se realizaron en los distintos laboratorios para la clase de Sistemas y Tecnologías Web de la Universidad del Valle de Guatemala.
