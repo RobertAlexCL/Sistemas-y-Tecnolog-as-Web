@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+      body {
+        background-image: url('StarWars.jpg');
+      }
+      
+      .rootStyle {
+        margin: 0;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="Title" class="titleStyle"></div>
+    <div id="root" class="rootStyle"></div>
+      <script type="application/javascript">
+          const chat = document.getElementById("root");
+          chat.style = "position: fixed; height: 550px; width: 360px; top: 100px; left: 775px;border: 3px solid black; overflow: auto; background-color: rgba(138,221,45,0.6)";
+
+          const messageList = document.createElement("div");
+          const getMessage = () => {
+            fetch("http://ubeje.xyz:3000/messages")
+                .then(
+                  resp => resp.json()
+                )
+                .then(
+                  resp => {
+                    messageList.innerHTML = "";
+                    resp.map(value => {
+                        const messageElement = document.createElement("p");
+                        messageElement.append("---> ")
+                        messageElement.append(value.username);
+                        messageElement.append(": ");
+                        messageElement.append(value.message);
+                        messageList.append(messageElement);
+                        updateScroll();
+                      }
+                    )
+                  }
+                )
+          }
+          const updateScroll = () => {
+            const element = document.getElementById("root");
+            element.scrollTop = element.scrollHeight;
+
+          }
+          chat.append(messageList);
+          getMessage();
+          const textBox = document.createElement('textarea');
+          textBox.style = 'position: fixed; width: 300px; height: 20px; top: 660px; left: 800px; background-color: rgba(138,221,45,1)';
+          chat.append(textBox);
+          textBox.addEventListener('keydown', (event) => {
+            if(event.key === "Enter") {
+              const texto = textBox.value
+              const urls = "";
+
+              const jsonToSend = {
+                username: "Robert",
+                message: texto
+              }
+              if(texto.length < 140) {
+                fetch('http://ubeje.xyz:3000/messages' , {
+                  method: "POST",
+                  headers: {"Content-Type": "application/json"},
+                  body: JSON.stringify(jsonToSend)
+                })
+                .then ( () => {
+                  textBox.value = "";
+                  getMessage();
+                })
+              }
+              else {
+                alert("Enter a text with less than 140 characters!");
+              }
+            }
+          });
+      </script>
+  </body>
+</html>
